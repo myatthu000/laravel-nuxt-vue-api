@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::query()->latest('id')->get();
+        return Post::query()->with(['user:id,name'])->latest('id')->get();
     }
 
     /**
@@ -39,6 +39,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+	sleep(3);
         $post = Post::query()->create([
             'user_id' => 1,
             'title' => $request->title,
@@ -56,7 +57,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $post;
+        return $post->load('user:id,name');
     }
 
     /**
@@ -79,11 +80,12 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $post = Post::query()->update([
-            'user_id' => 1,
-            'title' => $request->title,
-            'body' => $request->body,
-        ]);
+//        $post = Post::query()->update([
+//            'user_id' => 1,
+//            'title' => $request->title,
+//            'body' => $request->body,
+//        ]);
+
 
         return $post;
     }
